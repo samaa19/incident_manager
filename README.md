@@ -5,6 +5,7 @@ A Flutter package for managing incidents in event management applications. This 
 ## Features
 
 - **Incidents Chart Widget**: A widget that displays incident statistics with pie chart visualization
+- **Incidents Statistics and List Screen**: A complete screen for viewing incidents with statistics and filtering
 - **Incident Models**: Complete data models for incidents, including severity levels and status
 - **State Management**: Bloc/Cubit state management for incidents statistics
 - **API Layer**: Self-contained API calls for incidents data
@@ -84,6 +85,46 @@ class MyHomePage extends StatelessWidget {
 }
 ```
 
+### Incidents Statistics and List Screen
+
+The `IncidentsStatisticsAndListScreen` provides a complete incidents management interface:
+
+```dart
+import 'package:incident_manager/incident_manager.dart';
+import 'package:blink_component/blink_component.dart';
+import 'package:get/get.dart';
+
+class MyIncidentsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<IncidentsStatisticsAndListController>(
+      init: IncidentsStatisticsAndListController(),
+      builder: (controller) {
+        return IncidentsStatisticsAndListScreen(
+          palette: MyColorsPalette(), // From blink_component
+          appIcons: AppIcons(), // From blink_component
+          appBorders: AppBorders(), // From blink_component
+          assets: MyAssets(), // From blink_component
+          isDark: false, // Your dark mode state
+          onBackTap: () {
+            // Handle back navigation
+            Navigator.pop(context);
+          },
+          onIncidentTap: (incident) {
+            // Handle incident tap
+            print('Incident tapped: ${incident.title}');
+          },
+          onChangeStatus: (incidentId) {
+            // Handle status change
+            print('Status changed for incident: $incidentId');
+          },
+        );
+      },
+    );
+  }
+}
+```
+
 ### Using State Management Directly
 
 ```dart
@@ -158,9 +199,10 @@ This package depends on:
 
 ## API Endpoints
 
-The package expects the following API endpoint:
+The package expects the following API endpoints:
 
 - `GET /api/home/statistics` - Returns incident statistics data
+- `GET /api/home/incidents` - Returns paginated incidents list
 
 The response should match the `OrganizerStatisticsModel` structure from `blink_component`.
 

@@ -22,5 +22,8 @@ export 'src/config/network_helpers.dart';
 // Export controllers
 export 'src/controllers/incidents_statistics_and_list_controller.dart';
 
+// Export screens
+export 'src/screens/incidents_statistics_and_list_screen.dart';
+
 // Export widgets
 export 'src/widgets/incidents_chart_widget.dart';

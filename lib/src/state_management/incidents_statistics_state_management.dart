@@ -44,9 +44,11 @@ class IncidentsStatisticsCubit extends Cubit<IncidentsStatisticsState> {
   IncidentsStatisticsCubit() : super(IncidentsStatisticsInitial());
 
   Future<void> getIncidentsStatistics(BuildContext context) async {
+
     emit(IncidentsStatisticsLoading());
 
-    final result = await _repository.getIncidentsStatistics();
+
+    final result = await _repository.getIncidentsChartDetails();
 
     result.fold(
       (error) => emit(IncidentsStatisticsError(error)),

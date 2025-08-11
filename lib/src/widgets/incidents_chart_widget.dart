@@ -13,25 +13,22 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import '../state_management/incidents_statistics_state_management.dart';
+import '../../incident_manager.dart';
 
 class IncidentsDetailsChartWidget extends StatefulWidget {
   final MyColorsPalette palette;
-  final AppIcons appIcons;
-  final AppBorders appBorders;
+  final bool isDark;
   final VoidCallback? onSeeAllTap;
 
   const IncidentsDetailsChartWidget({
     super.key,
     required this.palette,
-    required this.appIcons,
-    required this.appBorders,
+    required this.isDark,
     this.onSeeAllTap,
   });
 
   @override
-  State<IncidentsDetailsChartWidget> createState() =>
-      _IncidentsDetailsChartWidgetState();
+  State<IncidentsDetailsChartWidget> createState() => _IncidentsDetailsChartWidgetState();
 }
 
 class _IncidentsDetailsChartWidgetState
@@ -60,10 +57,15 @@ class _IncidentsDetailsChartWidgetState
 
   @override
   Widget build(BuildContext context) {
+    final palette = widget.palette;
+    final appIcons = incidentsModuleAppIcons;
+    final appBorders = incidentsModuleAppBorders;
+
     return BlocProvider(
       create: (context) => IncidentsStatisticsCubit()..getIncidentsStatistics(context),
       child: BlocBuilder<IncidentsStatisticsCubit, IncidentsStatisticsState>(
         builder: (context, state) {
+
           if (state is IncidentsStatisticsLoaded &&
               (state.incidentsStatistics.incidents.moderateCount > 0 ||
                   state.incidentsStatistics.incidents.severCount > 0)) {
@@ -82,18 +84,29 @@ class _IncidentsDetailsChartWidgetState
                       title: openIncidentsKey,
                       seeAllText: showAllTextKey,
                       showSeeAll: true,
-                      palette: widget.palette,
-                      appIcons: widget.appIcons,
+                      palette: palette,
+                      appIcons: appIcons,
                       seAllOnTap: widget.onSeeAllTap ?? () {},
                     ),
                     CustomInkWell(
-                      onTap: widget.onSeeAllTap ?? () {},
+                      onTap: () {
+                        // Get.put(IncidentsStatisticsAndListController());
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => IncidentsStatisticsAndListScreen(
+                              palette: palette,
+                              isDark: widget.isDark,
+                            ),
+                          ),
+                        );
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: widget.palette.themeColorsSurfaceElevationRaised,
-                          border: Border.all(color: widget.palette.themeColorsBorderNeutral11),
-                          borderRadius: BorderRadius.circular(widget.appBorders.xLarge),
+                          color: palette.themeColorsSurfaceElevationRaised,
+                          border: Border.all(color: palette.themeColorsBorderNeutral11),
+                          borderRadius: BorderRadius.circular(appBorders.xLarge),
                         ),
                         child: Row(
                           children: [
@@ -107,7 +120,7 @@ class _IncidentsDetailsChartWidgetState
                                       height: 14,
                                       width: 14,
                                       decoration: BoxDecoration(
-                                        color: widget.palette.themeColorsDangerDefault,
+                                        color: palette.themeColorsDangerDefault,
                                         borderRadius: BorderRadius.circular(4),
                                       ),
                                     ),
@@ -116,7 +129,7 @@ class _IncidentsDetailsChartWidgetState
                                       "$severCount ${severeTextKey.tr}",
                                       style: defaultTextStyle(
                                         14,
-                                        color: widget.palette.themeColorsTextTitle,
+                                        color: palette.themeColorsTextTitle,
                                         context: context,
                                       ),
                                     ),
@@ -130,7 +143,7 @@ class _IncidentsDetailsChartWidgetState
                                       height: 14,
                                       width: 14,
                                       decoration: BoxDecoration(
-                                        color: widget.palette.themeColorsWarningDefault,
+                                        color: palette.themeColorsWarningDefault,
                                         borderRadius: BorderRadius.circular(4),
                                       ),
                                     ),
@@ -139,7 +152,7 @@ class _IncidentsDetailsChartWidgetState
                                       "$moderateCount ${moderateTextKey.tr}",
                                       style: defaultTextStyle(
                                         14,
-                                        color: widget.palette.themeColorsTextTitle,
+                                        color: palette.themeColorsTextTitle,
                                         context: context,
                                       ),
                                     )
@@ -153,7 +166,7 @@ class _IncidentsDetailsChartWidgetState
                                       height: 14,
                                       width: 14,
                                       decoration: BoxDecoration(
-                                        color: widget.palette.themeColorsBorderNeutral08,
+                                        color: palette.themeColorsBorderNeutral08,
                                         borderRadius: BorderRadius.circular(4),
                                       ),
                                     ),
@@ -162,7 +175,7 @@ class _IncidentsDetailsChartWidgetState
                                       "$lowCount ${lowTextKey.tr}",
                                       style: defaultTextStyle(
                                         14,
-                                        color: widget.palette.themeColorsTextTitle,
+                                        color: palette.themeColorsTextTitle,
                                         context: context,
                                       ),
                                     )
@@ -188,20 +201,20 @@ class _IncidentsDetailsChartWidgetState
                                               value: severCount.toDouble(),
                                               radius: 45,
                                               showTitle: false,
-                                              color: widget.palette.themeColorsDangerDefault),
+                                              color: palette.themeColorsDangerDefault),
                                           PieChartSectionData(
                                             badgeWidget: Container(),
                                             value: moderateCount.toDouble(),
                                             radius: 45,
                                             showTitle: false,
-                                            color: widget.palette.themeColorsWarningDefault,
+                                            color: palette.themeColorsWarningDefault,
                                           ),
                                           PieChartSectionData(
                                             badgeWidget: Container(),
                                             radius: 45,
                                             value: lowCount.toDouble(),
                                             showTitle: false,
-                                            color: widget.palette.themeColorsBorderNeutral08,
+                                            color: palette.themeColorsBorderNeutral08,
                                         ),
                                       ],
                                     ),
@@ -212,7 +225,7 @@ class _IncidentsDetailsChartWidgetState
                                       height: 70,
                                       width: 70,
                                       decoration: BoxDecoration(
-                                        color: widget.palette.themeColorsSurfaceElevationRaised,
+                                        color: palette.themeColorsSurfaceElevationRaised,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Column(
@@ -224,7 +237,7 @@ class _IncidentsDetailsChartWidgetState
                                               overflow: TextOverflow.ellipsis,
                                               style: defaultTextStyle(
                                                 16,
-                                                color: widget.palette.themeColorsTextTitle,
+                                                color: palette.themeColorsTextTitle,
                                                 weight: FontWeight.w700,
                                                 context: context,
                                               )),
@@ -236,7 +249,7 @@ class _IncidentsDetailsChartWidgetState
                                             overflow: TextOverflow.ellipsis,
                                             style: defaultTextStyle(
                                               12,
-                                              color: widget.palette.themeColorsTextTitle,
+                                              color: palette.themeColorsTextTitle,
                                               context: context,
                                             ),
                                           ),

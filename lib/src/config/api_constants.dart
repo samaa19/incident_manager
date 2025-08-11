@@ -10,11 +10,12 @@
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 
-
-// Home Statistics URLs
-const incidentsChartDetailsURL  = '/api/v3/mobile-logistics/home/statistics';
-const incidentsStatisticsURL    = '/api/v3/mobile-logistics/home/incidents/stats';
-const incidentsListURL          = '/api/v3/mobile-logistics/home/incidents';
+// URLs
+const incidentsChartDetailsURL  = '/v3/mobile-logistics/home/statistics';
+const incidentsStatisticsURL    = '/v3/mobile-logistics/home/incidents/stats';
+const incidentsListURL          = '/v3/mobile-logistics/home/incidents';
+const incidentScopeNamesUrl     = '/v3/mobile-logistics/home/incidents/types';
+const capacityIndicatorsUrl     = '/v3/mobile-logistics/app-configs/capacity-indicators';
 
 // Network Helpers
 Options getCacheOptions({Duration? maxAgeDuration}) {
