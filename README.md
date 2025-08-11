@@ -11,16 +11,26 @@ A Flutter package for managing incidents in event management applications. This 
 - **API Layer**: Self-contained API calls for incidents data
 - **Customizable UI**: Uses `blink_component` for consistent theming and UI components
 
+## Prerequisites
+
+This package depends on `blink_component` for UI components, theming, and colors. Make sure you have access to the `blink_component` repository before using this package.
+
 ## Installation
 
 Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  incident_manager:
+  incident_manager: ^0.0.1
+  blink_component:
     git:
-      url: https://github.com/your-username/incident_manager.git
-      ref: main
+      url: git@github.com:blink-global/blink_component.git
+      ref: incident-module-changes
+```
+
+Then run:
+```bash
+flutter pub get
 ```
 
 ## Setup
