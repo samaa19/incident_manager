@@ -11,10 +11,11 @@ dependencies:
   flutter:
     sdk: flutter
   blink_component:
-    path: ../blink_component
-#    git:
-#       url: git@github.com:blink-global/blink_component.git
-#       ref: dev_redesign
+#    path: ../blink_component
+    git:
+       url: git@github.com:blink-global/blink_component.git
+       ref: incident-module-changes
+
   get: ^4.6.6
   dio: ^5.4.1
   retrofit: ^4.1.0
